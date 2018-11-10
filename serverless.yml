@@ -1,0 +1,19 @@
+service: aws-nodejs # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+credentials: ${file(./credentials.yml)}
+
+functions:
+  publishJoke:
+    handler: handler.publishJoke
+    events:
+      - schedule: rate(10 minutes)
+    environment:
+      twitterConsumerKey: ${self:custom.twitterClient.consumerKey}
+      twitterConsumerSecret: ${self:custom.twitterClient.consumerSecret}
+      twitterAccessToKenKey: ${self:custom.twitterClient.accessToKenKey}
+      twitterAccessTokenSecret: ${self:custom.twitterClient.accessTokenSecret}
+      dadJokeClientURL: "https://icanhazdadjoke.com"
